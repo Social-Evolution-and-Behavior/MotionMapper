@@ -97,7 +97,8 @@ function [Xs,Ys,angles,areas,parameters,framesToCheck,svdskipped,areanorm] = ...
     parfor ii=1:length(idx)
         temp = vidObj.read(idx(ii));
         if IS_RGB
-            currentImageSet(:,:,ii) = temp(:,:,1);
+            % asaf: replaced the R channel with min
+            currentImageSet(:,:,ii) = min(temp,[],3);
         else
             currentImageSet(:,:,ii) = temp;
         end
@@ -129,6 +130,9 @@ function [Xs,Ys,angles,areas,parameters,framesToCheck,svdskipped,areanorm] = ...
     imageSizes = zeros(size(idx));
     for j = 1:parameters.areaNormalizationNumber
         a = currentImageSet(:,:,j);
+        % asaf: rescale image color
+        a=uint8((double(a)-40)*255/215);
+        % end asaf
         imageSizes(j) = sum(imcomplement(a(:))>bodyThreshold);
     end
     imageSize = median(imageSizes);
@@ -215,8 +219,13 @@ function [Xs,Ys,angles,areas,parameters,framesToCheck,svdskipped,areanorm] = ...
         
         originalImage = read(vidObj,i);
         if length(size(originalImage)) == 3
-            originalImage = originalImage(:,:,1);
+            % asaf: min instaed of R
+            originalImage = min(originalImage,[],3);
         end
+        
+        % asaf: rescale image color
+        originalImage=uint8((double(originalImage)-40)*255/215);
+        % end asaf
         
         if ~segmentationOff
             imageOut = segmentImage_combo(originalImage,dilateSize,cannyParameter,...
@@ -307,8 +316,8 @@ function [Xs,Ys,angles,areas,parameters,framesToCheck,svdskipped,areanorm] = ...
     Areas_temp = cell(numProcessors,1);
     svdskips_temp = cell(numProcessors,1);
     
-    
-    parfor i=1:numProcessors
+    % asaf: parfor -> for
+    for i=1:numProcessors
         
         [Xs_temp{i},Ys_temp{i},Angles_temp{i},Areas_temp{i},svdskips_temp{i}] = ...
             align_subroutine_parallel_avi(groupings{i},currentPhis(i),...

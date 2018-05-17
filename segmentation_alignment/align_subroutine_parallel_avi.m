@@ -50,7 +50,13 @@ for j=2:L
     nn = nDigits - 1 - floor(log(k+1e-10)/log(10));
     zzs  = repmat('0',1,nn);
     
-    originalImage = squeeze(vidChunk(:,:,1,j));
+    % asaf: min instead of R
+    originalImage = min(vidChunk(:,:,:,j),[],3);
+    
+    % asaf: rescale image color
+    originalImage=uint8((double(originalImage)-40)*255/215);
+    % end asaf
+    
     sCurrent = size(originalImage);
     
     if sCurrent(1) < s(1) || sCurrent(2) < s(2)

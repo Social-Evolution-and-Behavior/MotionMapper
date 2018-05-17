@@ -72,7 +72,7 @@ fprintf(1,'Finding Postural Eigenmodes\n');
 vecs = vecs(:,1:parameters.numProjections);
 
 figure
-makeMultiComponentPlot_radon_fromVecs(vecs(:,1:25),25,thetas,pixels,[201 90]);
+makeMultiComponentPlot_radon_fromVecs(vecs(:,1:25),25,thetas,pixels,[185 90]);
 caxis([-3e-3 3e-3])
 colorbar
 title('First 25 Postural Eigenmodes','fontsize',14,'fontweight','bold');
@@ -81,7 +81,7 @@ drawnow;
 
 %% Find projections for each data set
 
-projectionsDirectory = [filePath './projections/'];
+projectionsDirectory = ['/home/asaf/data/MotionMapperTest/projections/'];
 if ~exist(projectionsDirectory,'dir')
     mkdir(projectionsDirectory);
 end
