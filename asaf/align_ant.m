@@ -1,21 +1,13 @@
 function aligned = align_ant(image)
 
-refArea = 1300;
+refArea = 2000;
 
-% to grayscale 
-a = min(image,[],3);
-
-% contrast adjustment
-a = imadjust(a);
-
-% sharpening
-a = imsharpen(a);
+a = image;
 
 % threshold
-a = a<128;
+a = a>128;
 
 % some morphological filtering
-
 a = imclose(imopen(a,ones(5)),ones(5));
 a = bwareafilt(a,1);
 
