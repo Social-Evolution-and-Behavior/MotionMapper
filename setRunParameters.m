@@ -84,7 +84,7 @@ function parameters = setRunParameters(parameters)
     num_Radon_Thetas = 90;
     
     %image scaling factor
-    rescaleSize = 10/7;
+    rescaleSize = 1;
     
     %batch size for running online PCA
     pca_batchSize = 20000;
@@ -109,10 +109,10 @@ function parameters = setRunParameters(parameters)
     omega0 = 5;
     
     %sampling frequency (Hz)
-    samplingFreq = 25;
+    samplingFreq = 15;
         
     %minimum frequency for wavelet transform (Hz)
-    minF = .2;
+    minF = .1;
     
     %maximum frequency for wavelet transform (Hz)
     maxF = 10;

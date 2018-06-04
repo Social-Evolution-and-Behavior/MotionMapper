@@ -15,9 +15,15 @@ function images = findAllImagesInFolders(folderName,fileType,frontConstraint)
         folderName = strcat(folderName, '/');
     end
     
-    [~,temp] = system(['ls ' folderName '/' frontConstraint '*' fileType]);
-    images = regexp(temp,'\n','split')';
-    imageLengths = returnCellLengths(images);
-    images = images(imageLengths > length(fileType));
+    %[~,temp] = system(['ls ' folderName '/' frontConstraint '*' fileType]);
+    %
+    %images = regexp(temp,'\n','split')';
+    %imageLengths = returnCellLengths(images);
+    %images = images(imageLengths > length(fileType));
     
+    images = dir([folderName,'*',fileType]);
+    images = {images.name};
+    for i=1:length(images)
+        images{i}=[folderName,images{i}];
+    end
     

@@ -1,7 +1,7 @@
 
-
+expdir= '/Users/asaf/Dropbox (Personal)/KronauerLab/tracking/single_ant/single_ant_constant_2018_05_21_16_50_04_cam_0/'
 % expdir = '/media/queen/AAnts102/hires_single_ant_2018_05_11_16_02_09/hires_single_ant_2018_05_11_16_02_09_cam_0';
-% Trck = trhandles.load(expdir);
+Trck = trhandles.load(expdir);
 avidir = Trck.croppedavidir;
 
 source_avi_list = findAllImagesInFolders(avidir,'.avi');
@@ -14,9 +14,10 @@ if ~isdir(workdir), mkdir(workdir); end
 
 
 %define any desired parameter changes here
-parameters.samplingFreq = 100;
+parameters.samplingFreq = 15;
 parameters.trainingSetSize = 5000;
-
+parameters.rescaleSize=1;
+parameters.numProcessors= 2;
 %initialize parameters
 parameters = setRunParameters(parameters);
 
@@ -35,7 +36,7 @@ end
 for ii=1:L    
     
     report('I',['Aligning avi ',num2str(ii),' out of ',num2str(L)]);
-    inavi = source_avi_list{ii};
+    inavi = [avidir,source_avi_list{ii}];
     [fpath,fname,fext]=fileparts(inavi);
     outavi = [alignmentDirectory,fname,fext];
     aligned_avi_list{ii} = outavi;
@@ -63,7 +64,7 @@ fprintf(1,'Finding Postural Eigenmodes\n');
 vecs = vecs(:,1:parameters.numProjections);
 
 figure
-makeMultiComponentPlot_radon_fromVecs(vecs(:,1:25),25,thetas,pixels,[185 90]);
+makeMultiComponentPlot_radon_fromVecs(vecs(:,1:25),25,thetas,pixels,[139 90]);
 caxis([-3e-3 3e-3])
 colorbar
 title('First 25 Postural Eigenmodes','fontsize',14,'fontweight','bold');
@@ -72,11 +73,13 @@ drawnow;
 
 %% Find projections for each data set
 
-projectionsDirectory = ['/home/asaf/data/MotionMapperTest/projections/'];
+projectionsDirectory = [workdir,'/projections/'];
 if ~exist(projectionsDirectory,'dir')
     mkdir(projectionsDirectory);
 end
 
+
+alignmentFolders = {alignmentDirectory};
 fprintf(1,'Finding Projections\n');
 for i=1:L
     

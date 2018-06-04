@@ -30,6 +30,19 @@ while hasFrame(vr)
     
     % align image
     image = imrotate(image,deg(or(i))+90,'bilinear','crop');
+    im=imerode(image>128,ones(3));
+    im=bwareafilt(im,1);
+    try
+    s=regionprops(im,'Extrema');
+    top=min(s.Extrema(:,2));
+    bottom = size(im,1)-max(s.Extrema(:,2));
+    
+    if top<bottom
+        image=flipm(image,[1,2]);
+    end
+    catch
+    end
+        
     writeVideo(vw,image);
     
 end

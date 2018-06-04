@@ -55,7 +55,7 @@ function [yData,signalData,signalIdx,signalAmps] = ...
     fprintf(1,'\t Running t-SNE\n');
     parameters.relTol = rtol;
     parameters.perplexity = perplexity;
-    [yData,~,~,~] = tsne_d(D,parameters);
+    yData = tsne_d(D,parameters);
         
     
     
