@@ -70,14 +70,11 @@ function [rotationAngle,X,Y,finalImage,errors,finalOriginalImage] = ...
         %Find fft of the Radon transform       
         F1 = abs(fft(radon(image1, thetas)));
         F2 = abs(fft(radon(image2, thetas)));
-        
-        
-        
+                
         %Find the index of the correlation peak
         correlation = sum(fft2(F1) .* fft2(F2));
         peaks = real(ifft(correlation));
         peakIndex = find(peaks==max(peaks));
-        
         
         if length(peakIndex) > 1
             peakIndex = peakIndex(1);
